@@ -1,0 +1,12 @@
+planning:
+  max_sections: 8
+
+research:
+  max_search_results: 10
+  max_sources_per_section: 5
+
+review:
+  max_revision_iterations: 2
+
+report:
+  default_type: normal

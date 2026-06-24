@@ -1,0 +1,5 @@
+development:
+  renderer: console
+
+production:
+  renderer: json
