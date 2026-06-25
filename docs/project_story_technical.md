@@ -186,3 +186,126 @@ Goals:
 - Structured output integration
 - Token usage tracking
 - Future observability support
+
+# Milestone: LLM Service Architecture Design
+
+## Objective
+
+Design a provider-agnostic language model interaction layer before implementing any agent logic.
+
+The goal was to prevent provider-specific SDKs from leaking into the agent layer and to support future provider replacement with minimal code changes.
+
+---
+
+## Architectural Decision
+
+Selected architecture:
+
+LLM Service
+↓
+Provider Adapter
+↓
+Provider SDK
+
+Agents interact only with the LLM Service.
+
+Provider-specific implementations remain isolated behind adapters.
+
+---
+
+## Key Decisions
+
+### Provider Abstraction
+
+Agents remain unaware of:
+
+- Groq
+- OpenAI
+- Gemini
+- Anthropic
+- Ollama
+- OpenRouter
+
+This reduces coupling and improves maintainability.
+
+---
+
+### Configuration-Driven Model Selection
+
+Model and provider selection are controlled through configuration files rather than hardcoded values.
+
+Benefits:
+
+- Easier experimentation
+- Environment flexibility
+- No code modifications for model changes
+
+---
+
+### Structured Output Strategy
+
+The LLM layer was designed around typed Pydantic outputs.
+
+Planned outputs include:
+
+- PlanningResult
+- ResearchResult
+- ReviewResult
+- WritingResult
+- FinalReviewResult
+
+This improves validation and reliability.
+
+---
+
+### Observability Support
+
+The architecture requires collection of:
+
+- Provider
+- Model
+- Execution duration
+- Token usage
+- Error information
+
+This information will later support evaluation and monitoring.
+
+---
+
+## Architectural Outcome
+
+The system architecture now becomes:
+
+LangGraph
+↓
+Nodes
+↓
+Agents
+↓
+Prompt Service + LLM Service
+↓
+Prompt Files + Providers
+
+This establishes clear responsibility boundaries throughout the system.
+
+---
+
+## Lessons Learned
+
+Provider independence is easiest to achieve before implementation begins.
+
+Designing abstraction layers early significantly reduces future refactoring effort.
+
+---
+
+## Next Milestone
+
+Sprint 3.0 – Prompt Service Implementation
+
+Goals:
+
+- Prompt loading
+- Prompt rendering
+- Variable validation
+- Prompt caching
+- Prompt service testing

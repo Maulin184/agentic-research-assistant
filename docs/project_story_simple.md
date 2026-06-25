@@ -72,3 +72,43 @@ Although this phase produced very little executable code, it reduced a large amo
 ### Next Step
 
 Design the LLM Service layer that will allow us to switch between different AI providers without changing agent code.
+
+# Milestone: Designing the AI Communication Layer
+
+In this phase, we designed how the AI parts of the system will communicate with different language models.
+
+Instead of allowing every AI agent to directly talk to a specific provider, we introduced an intermediate layer called the LLM Service.
+
+This layer acts as a central communication hub between our agents and the underlying AI providers.
+
+### Why This Matters
+
+Without this design, changing providers later would require modifying many parts of the codebase.
+
+With the new architecture:
+
+- Agents remain independent
+- Providers can be swapped easily
+- Configuration controls model selection
+- Future experimentation becomes simpler
+
+### What We Designed
+
+We defined:
+
+- A provider-agnostic LLM Service
+- Provider adapter architecture
+- Configuration-driven model selection
+- Structured output support
+- Token usage tracking
+- Observability requirements
+
+### What We Learned
+
+Good software architecture creates flexibility before it becomes necessary.
+
+By separating AI providers from the business logic, we reduce future maintenance costs and make experimentation easier.
+
+### Next Step
+
+Begin implementing the Prompt Service, which will load and render prompts for all AI agents.
