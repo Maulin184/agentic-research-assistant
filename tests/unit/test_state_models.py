@@ -44,3 +44,14 @@ def test_execution_id_generated():
     )
 
     assert state.execution_id is not None
+
+def test_global_context_default():
+    request = ResearchRequest(
+        topic="Quantum Computing"
+    )
+
+    state = ResearchState(
+        request=request
+    )
+
+    assert state.global_context == ""    

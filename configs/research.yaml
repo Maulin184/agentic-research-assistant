@@ -4,6 +4,7 @@ planning:
 research:
   max_search_results: 10
   max_sources_per_section: 5
+  max_parallel_sections: 3
 
 review:
   max_revision_iterations: 2

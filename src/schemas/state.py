@@ -16,6 +16,8 @@ class ResearchState(BaseModel):
 
     request: ResearchRequest
 
+    global_context: str = ""
+
     sections: list[Section] = []
 
     report: ResearchReport | None = None
