@@ -75,3 +75,114 @@ Reason:
 ## Lessons Learned
 
 State-first design significantly simplifies future graph design because node responsibilities become clear and explicit.
+
+# Milestone: Architecture Design Phase
+
+## Objective
+
+Establish the core architecture before implementing any AI workflow components.
+
+The goal was to avoid premature implementation and reduce future refactoring costs.
+
+---
+
+## Node Architecture
+
+Defined the workflow as a collection of state-driven nodes:
+
+1. Planner Node
+2. Global Research Node
+3. Section Research Node
+4. Section Review Node
+5. Writer Node
+6. Final Review Node
+7. PDF Generation Node
+
+Key decisions:
+
+- Nodes own retries
+- Nodes own state mutation
+- Nodes own logging and error handling
+- Nodes communicate only through workflow state
+
+---
+
+## Agent Architecture
+
+Defined a provider-agnostic agent layer.
+
+Planned agents:
+
+- PlannerAgent
+- ResearchAgent
+- ReviewerAgent
+- WriterAgent
+- FinalReviewerAgent
+
+Key decisions:
+
+- Async-first design
+- Structured outputs via Pydantic models
+- Agents independent from LangGraph state
+- Agents communicate through typed contracts
+
+---
+
+## Prompt Architecture
+
+Prompts were elevated to first-class project assets.
+
+Key decisions:
+
+- External prompt files
+- Separate system and user prompts
+- Dedicated Prompt Service
+- Python template formatting for V1
+- Provider-independent prompt design
+
+Benefits:
+
+- Better maintainability
+- Easier experimentation
+- Improved testing
+- Cleaner agent implementations
+
+---
+
+## Architectural Outcome
+
+The current architecture is:
+
+LangGraph
+↓
+Nodes
+↓
+Agents
+↓
+Prompt Service + LLM Service
+↓
+Prompt Files + Providers
+
+This establishes clear separation of concerns and supports future provider replacement with minimal code changes.
+
+---
+
+## Lessons Learned
+
+The biggest lesson during this phase was that architecture decisions become significantly harder to change after implementation begins.
+
+Investing time in design before coding reduces long-term complexity and improves maintainability.
+
+---
+
+## Next Milestone
+
+LLM Service Architecture Design
+
+Goals:
+
+- Provider abstraction
+- Model routing
+- Structured output integration
+- Token usage tracking
+- Future observability support
