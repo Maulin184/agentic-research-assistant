@@ -112,3 +112,13 @@ By separating AI providers from the business logic, we reduce future maintenance
 ### Next Step
 
 Begin implementing the Prompt Service, which will load and render prompts for all AI agents.
+
+### Sprint 3.0 – Prompt Service
+
+- Framework-agnostic Prompt Service
+- Prompt Loader
+- Prompt Renderer (Jinja2)
+- In-memory Prompt Cache
+- Dependency Injection support
+- Prompt template management
+- Prompt Service unit tests

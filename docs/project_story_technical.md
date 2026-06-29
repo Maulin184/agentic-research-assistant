@@ -309,3 +309,11 @@ Goals:
 - Variable validation
 - Prompt caching
 - Prompt service testing
+
+## Sprint 3.0 – Giving the AI Its Instructions
+
+Until now, we had built the foundation of the project. In this sprint, we created the system responsible for managing every prompt used by our AI agents.
+
+Instead of hardcoding prompts inside Python files, every prompt now lives as a separate Markdown template. The Prompt Service loads these templates, fills in the required information using Jinja2, and returns the final prompt to the agent.
+
+This approach keeps prompts easy to read, easy to improve, and completely independent of the application's code. It also prepares us for future prompt engineering without modifying the software architecture.

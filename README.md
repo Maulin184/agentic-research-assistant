@@ -187,3 +187,13 @@ This project prioritizes:
 * Token usage tracking design
 * Observability requirements
 * Async-first LLM interaction strategy
+
+### Sprint 3.0 – Prompt Service
+
+- Framework-agnostic Prompt Service
+- Prompt Loader
+- Prompt Renderer (Jinja2)
+- In-memory Prompt Cache
+- Dependency Injection support
+- Prompt template management
+- Prompt Service unit tests
