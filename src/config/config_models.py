@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, RootModel
 
 
 # ==========================
@@ -74,3 +74,26 @@ class EnvironmentLoggingConfig(BaseModel):
 class LoggingConfig(BaseModel):
     development: EnvironmentLoggingConfig
     production: EnvironmentLoggingConfig
+
+# ==========================
+# PROVIDER CONFIGURATION
+# ==========================
+
+class ProviderConfig(BaseModel):
+    """
+    Configuration for an LLM provider.
+    """
+
+    api_base: str
+
+    timeout: int = Field(
+        gt=0,
+    )
+
+    max_retries: int = Field(
+        ge=0,
+    )
+
+
+class ProvidersConfig(RootModel):
+    root: dict[str, ProviderConfig]

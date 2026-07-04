@@ -1,0 +1,14 @@
+groq:
+  api_base: "https://api.groq.com"
+  timeout: 60
+  max_retries: 2
+
+openai:
+  api_base: "https://api.openai.com"
+  timeout: 60
+  max_retries: 2
+
+ollama:
+  api_base: "http://localhost:11434"
+  timeout: 120
+  max_retries: 0

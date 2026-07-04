@@ -34,9 +34,9 @@ def configure_logging() -> None:
     )
 
 
-def get_logger():
+def get_logger(name: str | None = None):
     """
     Return application logger instance.
     """
 
-    return structlog.get_logger()
+    return structlog.get_logger(name)
