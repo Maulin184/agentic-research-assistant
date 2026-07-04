@@ -21,6 +21,7 @@ from .models import (
 )
 
 from .service import LLMService
+from .factory import ProviderFactory
 
 __all__ = [
     "AuthenticationError",
@@ -36,4 +37,5 @@ __all__ = [
     "RateLimitError",
     "TokenUsage",
     "LLMService",
+    "ProviderFactory",
 ]

@@ -1,161 +1,245 @@
 # Agentic Research Assistant
 
-Production-grade Agentic AI Research Assistant built with LangGraph.
+> **A production-grade Agentic AI Research Assistant built with LangGraph, designed using modern software engineering principles, provider-agnostic LLM architecture, and production-ready AI workflows.**
 
 ---
 
-## Project Goal
+# Project Vision
 
-Build a production-grade Agentic AI Research Assistant capable of:
+The goal of this project is to build a complete end-to-end **Agentic AI Research Assistant** capable of transforming a simple research request into a professionally written report through autonomous multi-agent collaboration.
 
-* Research planning
-* Multi-step research execution
-* Source collection and synthesis
-* Section-level quality review
-* Full report generation
-* PDF export
+The assistant is being developed not only as a functional application but also as a **learning-first, portfolio-grade, and production-oriented project** that demonstrates real-world AI engineering practices.
 
-The system is designed to demonstrate:
+The final system will support:
 
-* Agentic AI
-* LangGraph workflows
-* Multi-agent orchestration
-* State management
-* Evaluation frameworks
-* Observability
-* Production engineering practices
+- Intelligent research planning
+- Multi-step autonomous research execution
+- Parallel section-wise research
+- Source collection and synthesis
+- AI-powered review and refinement
+- High-quality report generation
+- PDF export
+- Interactive Streamlit interface
+- FastAPI backend
+- Evaluation and observability
 
 ---
 
-## Current Status
+# Current Project Status
 
-**Phase:** Architecture & Design
+**Development Stage:** Active Development
 
-**Current Sprint:** Sprint 2.2 – Prompt Architecture Design
+**Current Phase:** Core Infrastructure & Workflow Foundation
 
-**Next Sprint:** Sprint 2.3 – LLM Service Architecture Design
+### Current Progress
 
----
-
-## Completed Milestones
-
-### Sprint 1.1 – Project Foundation
-
-* Repository setup
-* Development workflow
-* Dependency management
-
-### Sprint 1.2 – Configuration Layer
-
-* Environment-based settings
-* Pydantic validation
-* YAML configuration loading
-
-### Sprint 1.3 – Logging Foundation
-
-* Structured logging architecture
-* Environment-aware logging design
-* Logging tests
-
-### Sprint 1.4 – Typed Configuration Models
-
-* YAML-driven application configuration
-* Strongly typed configuration objects
-* Configuration validation tests
-
-### Sprint 1.5 – State Schema Design
-
-* Research domain models
-* Workflow state models
-* Source tracking
-* Review tracking
-* Report models
-* State validation tests
-
-### Sprint 2.0 – Node Architecture Design
-
-* Workflow node inventory
-* Node responsibilities
-* State ownership rules
-* Retry strategy design
-* Observability requirements
-* Workflow execution design
-
-### Sprint 2.1 – Agent Architecture Design
-
-* Provider-agnostic agent architecture
-* BaseAgent contract design
-* Structured output strategy
-* Async-first design
-* Agent responsibility boundaries
-
-### Sprint 2.2 – Prompt Architecture Design
-
-* Prompt management strategy
-* Prompt directory structure
-* System/User prompt separation
-* Prompt rendering strategy
-* Prompt service architecture
-* Prompt testing strategy
+| Component | Status |
+|-----------|--------|
+| Project Foundation | ✅ Completed |
+| Configuration Management | ✅ Completed |
+| Structured Logging | ✅ Completed |
+| Typed Configuration Models | ✅ Completed |
+| Research State Models | ✅ Completed |
+| Prompt Management System | ✅ Completed |
+| Provider-Agnostic LLM Layer | ✅ Completed |
+| LangGraph Workflow | 🚧 In Progress |
+| Agent Layer | ⏳ Planned |
+| Node Implementations | ⏳ Planned |
+| Evaluation Framework | ⏳ Planned |
+| PDF Generation | ⏳ Planned |
+| Streamlit UI | ⏳ Planned |
+| FastAPI Service | ⏳ Planned |
 
 ---
 
-## Architecture Progress
+# Current Features
 
-### Completed
+## Configuration System
 
-* Project Foundation
-* Configuration Layer
-* Logging Layer
-* Typed Configuration Layer
-* State Architecture
-* Node Architecture
-* Agent Architecture
-* Prompt Architecture
-
-### Planned
-
-* LLM Service Architecture
-* Provider Layer
-* Prompt Service
-* Agent Implementations
-* Node Implementations
-* LangGraph Workflow
-* Evaluation Framework
-* Observability Dashboard
-* PDF Generation
-* Streamlit UI
-* FastAPI Service
+- Environment-based settings
+- YAML-driven configuration
+- Strongly typed configuration models
+- Pydantic validation
+- Provider configuration support
 
 ---
 
-## High-Level Workflow
+## Prompt Management
 
-User Request
-↓
-Planner Node
-↓
-Global Research Node
-↓
-Section Research Nodes (Parallel)
-↓
-Section Review Nodes (Parallel)
-↓
-Writer Node
-↓
-Final Review Node
-↓
-PDF Generation Node
-↓
-Completed Report
+- Framework-agnostic Prompt Service
+- Prompt Loader
+- Jinja2 Prompt Renderer
+- Prompt Cache
+- Dependency Injection support
+- Template management
 
 ---
 
-## Current Repository Structure
+## LLM Infrastructure
+
+Production-ready provider abstraction including:
+
+- Provider-agnostic architecture
+- Abstract Provider Interface
+- LLM Service
+- Provider Factory
+- Mock Provider
+- Groq Provider
+- Configuration-driven provider selection
+- Token usage tracking
+- Unified request/response models
+- Custom exception hierarchy
+
+---
+
+## Research State
+
+Strongly typed workflow state including:
+
+- Research request models
+- Section models
+- Source models
+- Review models
+- Report models
+- Workflow state validation
+
+---
+
+## Observability
+
+- Structured logging
+- Environment-aware logging configuration
+- Centralized logger configuration
+
+---
+
+# High-Level Workflow
 
 ```text
-app/
-artifacts/
+User Request
+      │
+      ▼
+Planner Node
+      │
+      ▼
+Global Research Node
+      │
+      ▼
+Parallel Section Research
+      │
+      ▼
+Parallel Section Review
+      │
+      ▼
+Writer Node
+      │
+      ▼
+Final Review
+      │
+      ▼
+PDF Generation
+      │
+      ▼
+Completed Research Report
+```
+
+---
+
+# High-Level Architecture
+
+```text
+                User Request
+                      │
+                      ▼
+              LangGraph Workflow
+                      │
+        ┌─────────────┼─────────────┐
+        │             │             │
+    Planner      Researcher     Reviewer
+        │             │             │
+        └─────────────┼─────────────┘
+                      │
+                   Writer
+                      │
+                      ▼
+                Final Report
+                      │
+             Provider-Agnostic
+                LLM Service
+                      │
+               Provider Factory
+                      │
+      ┌───────────────┴───────────────┐
+      │                               │
+   Groq Provider                Mock Provider
+```
+
+---
+
+# Testing
+
+Current automated test coverage includes:
+
+- Configuration
+- Settings
+- Prompt Service
+- Prompt Rendering
+- Prompt Loading
+- Prompt Models
+- LLM Models
+- LLM Service
+- Provider Factory
+- Base Provider
+- Mock Provider
+- Groq Provider
+- Logging
+- Research State Models
+
+**Current Test Status**
+
+- ✅ 36 Unit Tests
+- ✅ All Tests Passing
+
+---
+
+# Tech Stack
+
+## Core
+
+- Python 3.11
+- LangGraph *(upcoming workflow integration)*
+- Pydantic v2
+- Jinja2
+
+## LLM
+
+- Groq SDK
+- Provider-Agnostic Architecture
+
+## Configuration
+
+- YAML
+- python-dotenv
+- pydantic-settings
+
+## Observability
+
+- Structlog
+
+## Testing
+
+- Pytest
+- unittest.mock
+
+## Code Quality
+
+- Ruff
+
+---
+
+# Repository Structure
+
+```text
 configs/
 docs/
 prompts/
@@ -167,33 +251,65 @@ tests/
 
 ---
 
-## Development Philosophy
+# Development Philosophy
 
-This project prioritizes:
+This project is built around the following engineering principles:
 
-* Learning over speed
-* Architecture before implementation
-* Evaluation before feature expansion
-* Production readiness
-* Maintainability
-* Deep understanding of Agentic AI systems
+- Learn deeply rather than build quickly
+- Architecture before implementation
+- Strong typing wherever practical
+- Test-driven development where appropriate
+- Modular and maintainable code
+- Provider independence
+- Production-oriented engineering practices
+- Continuous documentation
+- Incremental, well-tested development
 
-### Sprint 2.3 – LLM Service Architecture Design
+---
 
-* Provider-agnostic LLM architecture
-* Provider adapter strategy
-* Configuration-driven model selection
-* Structured output support design
-* Token usage tracking design
-* Observability requirements
-* Async-first LLM interaction strategy
+# Roadmap
 
-### Sprint 3.0 – Prompt Service
+## Foundation
 
-- Framework-agnostic Prompt Service
-- Prompt Loader
-- Prompt Renderer (Jinja2)
-- In-memory Prompt Cache
-- Dependency Injection support
-- Prompt template management
-- Prompt Service unit tests
+- ✅ Project Setup
+- ✅ Configuration System
+- ✅ Logging
+- ✅ Prompt Service
+- ✅ LLM Infrastructure
+
+## Workflow
+
+- 🚧 LangGraph Integration
+- ⏳ Agent Implementations
+- ⏳ Node Implementations
+
+## Product
+
+- ⏳ Evaluation Framework
+- ⏳ PDF Export
+- ⏳ FastAPI
+- ⏳ Streamlit UI
+
+---
+
+# Learning Goals
+
+This project is intentionally designed to gain practical expertise in:
+
+- Agentic AI
+- Generative AI Engineering
+- LangGraph
+- Multi-Agent Systems
+- LLM Application Architecture
+- Prompt Engineering
+- Retrieval-Augmented Generation (RAG)
+- Production Software Engineering
+- Testing AI Systems
+- Observability
+- System Design
+
+---
+
+# License
+
+This project is being developed as a learning, research, and portfolio project.

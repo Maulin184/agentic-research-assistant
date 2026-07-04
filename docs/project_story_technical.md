@@ -1,319 +1,334 @@
- ## Logging Architecture
+# Project Story (Technical)
 
-Implemented structured logging using Structlog.
+## Building the Engineering Foundation
 
-Rationale:
-- Consistent event logging
-- Future support for LangGraph tracing
-- Easier observability and debugging
+The project began by establishing the engineering infrastructure before implementing any AI functionality.
 
-Future Extensions:
-- Execution IDs
-- Request IDs
-- Token tracking
-- Performance metrics
+Configuration management was centralized using environment variables, YAML configuration files, and strongly typed Pydantic models. This ensured that application behavior could be controlled through configuration rather than hardcoded values.
 
-# Sprint 1.5 – State Schema Architecture
+At the same time, a structured logging foundation was introduced using Structlog.
 
-## Objective
+### Architectural Decisions
 
-Design the domain state model before implementing LangGraph workflows.
+* Centralized configuration management
+* Environment-aware settings
+* Strongly typed configuration validation
+* Structured logging across the entire application
 
-## Architectural Decision
+### Expected Benefits
 
-Business state models were designed independently from LangGraph.
+* Consistent application behavior
+* Easier debugging
+* Future observability support
+* Production readiness
 
-This avoids coupling core business entities to a specific orchestration framework.
+---
 
-## Implemented Models
+# Designing the Domain Before the Workflow
 
-- ResearchRequest
-- Source
-- ReviewFeedback
-- Section
-- ResearchReport
-- ResearchState
+Rather than beginning with LangGraph, the project first defined the business domain.
 
-## Key Decisions
+The objective was to create stable business entities that would remain independent of any workflow engine.
+
+The following domain models were implemented:
+
+* ResearchRequest
+* Source
+* ReviewFeedback
+* Section
+* ResearchReport
+* ResearchState
+
+### Architectural Decisions
+
+Business models remain completely independent of LangGraph.
+
+Workflow orchestration should adapt to the business domain—not the other way around.
 
 ### Rich Section State
 
-Sections store:
+Each research section stores:
 
-- Research content
-- Sources
-- Review history
-- Revision metadata
+* Generated content
+* Source references
+* Review history
+* Revision metadata
 
 This enables:
 
-- Evaluation
-- Observability
-- Review loops
-- Quality analysis
+* Evaluation
+* Review loops
+* Quality analysis
+* Future observability
 
-### Review History Preservation
+### Review History
 
-Instead of storing only the latest review result, a section stores all review feedback.
+Instead of overwriting review results, every review iteration is preserved.
 
-Benefits:
+Benefits include:
 
-- Auditability
-- Debugging
-- Evaluation of revision effectiveness
+* Auditability
+* Debugging
+* Revision analysis
 
-### Timezone-Aware Timestamps
+### Time Handling
 
-All timestamps use timezone-aware UTC datetimes.
+All timestamps use timezone-aware UTC datetimes to avoid common production issues associated with naive datetime objects.
 
-Reason:
+### Lessons Learned
 
-- Avoid naive datetime issues
-- Improve production readiness
-- Align with modern Python recommendations
-
-## Lessons Learned
-
-State-first design significantly simplifies future graph design because node responsibilities become clear and explicit.
-
-# Milestone: Architecture Design Phase
-
-## Objective
-
-Establish the core architecture before implementing any AI workflow components.
-
-The goal was to avoid premature implementation and reduce future refactoring costs.
+Designing the domain first significantly simplified later architectural decisions because every future component shares the same business vocabulary.
 
 ---
 
-## Node Architecture
+# Designing the Workflow Architecture
 
-Defined the workflow as a collection of state-driven nodes:
+With the business domain established, attention shifted to workflow orchestration.
 
-1. Planner Node
-2. Global Research Node
-3. Section Research Node
-4. Section Review Node
-5. Writer Node
-6. Final Review Node
-7. PDF Generation Node
+Instead of immediately implementing LangGraph nodes, the workflow was designed conceptually first.
 
-Key decisions:
+The research process was divided into specialized stages:
 
-- Nodes own retries
-- Nodes own state mutation
-- Nodes own logging and error handling
-- Nodes communicate only through workflow state
+1. Planner
+2. Global Research
+3. Section Research
+4. Section Review
+5. Writer
+6. Final Review
+7. PDF Generation
 
----
+### Architectural Decisions
 
-## Agent Architecture
+Nodes are responsible for:
 
-Defined a provider-agnostic agent layer.
+* State mutation
+* Retry handling
+* Logging
+* Error handling
 
-Planned agents:
+Nodes communicate exclusively through the shared workflow state.
 
-- PlannerAgent
-- ResearchAgent
-- ReviewerAgent
-- WriterAgent
-- FinalReviewerAgent
+This minimizes coupling between workflow stages.
 
-Key decisions:
+### Lessons Learned
 
-- Async-first design
-- Structured outputs via Pydantic models
-- Agents independent from LangGraph state
-- Agents communicate through typed contracts
+Clearly defined node responsibilities dramatically simplify workflow implementation and debugging.
 
 ---
 
-## Prompt Architecture
+# Designing the Agent Layer
 
-Prompts were elevated to first-class project assets.
+The workflow architecture naturally led to defining specialized AI agents.
 
-Key decisions:
+Rather than relying on a single general-purpose AI interaction, the project adopted a multi-agent architecture.
 
-- External prompt files
-- Separate system and user prompts
-- Dedicated Prompt Service
-- Python template formatting for V1
-- Provider-independent prompt design
+Planned agents include:
 
-Benefits:
+* PlannerAgent
+* ResearchAgent
+* ReviewerAgent
+* WriterAgent
+* FinalReviewerAgent
 
-- Better maintainability
-- Easier experimentation
-- Improved testing
-- Cleaner agent implementations
+### Architectural Decisions
 
----
+* Provider-independent agents
+* Async-first architecture
+* Typed Pydantic outputs
+* Separation from LangGraph state
 
-## Architectural Outcome
-
-The current architecture is:
-
-LangGraph
-↓
-Nodes
-↓
-Agents
-↓
-Prompt Service + LLM Service
-↓
-Prompt Files + Providers
-
-This establishes clear separation of concerns and supports future provider replacement with minimal code changes.
+This keeps agent logic reusable outside any specific orchestration framework.
 
 ---
 
-## Lessons Learned
+# Prompt Management Architecture
 
-The biggest lesson during this phase was that architecture decisions become significantly harder to change after implementation begins.
+Prompt engineering was treated as an engineering discipline rather than embedding prompts directly into Python source code.
 
-Investing time in design before coding reduces long-term complexity and improves maintainability.
+Prompts became first-class project assets.
 
----
+### Architectural Decisions
 
-## Next Milestone
+* External Markdown prompt templates
+* Separation of system and user prompts
+* Dedicated Prompt Service
+* Jinja2 template rendering
+* Framework-independent prompt management
 
-LLM Service Architecture Design
+### Benefits
 
-Goals:
-
-- Provider abstraction
-- Model routing
-- Structured output integration
-- Token usage tracking
-- Future observability support
-
-# Milestone: LLM Service Architecture Design
-
-## Objective
-
-Design a provider-agnostic language model interaction layer before implementing any agent logic.
-
-The goal was to prevent provider-specific SDKs from leaking into the agent layer and to support future provider replacement with minimal code changes.
+* Easier prompt iteration
+* Cleaner application code
+* Better testing
+* Improved maintainability
 
 ---
 
-## Architectural Decision
+# Implementing the Prompt Service
 
-Selected architecture:
+After defining the prompt architecture, the first reusable infrastructure component was implemented.
 
+The Prompt Service became responsible for:
+
+* Loading prompt templates
+* Rendering templates with Jinja2
+* In-memory caching
+* Dependency injection support
+* Variable validation
+* Centralized prompt management
+
+Comprehensive unit tests were added to validate each component independently.
+
+This established a reusable prompt pipeline for every future AI agent.
+
+---
+
+# Designing and Implementing the LLM Layer
+
+One of the most significant architectural milestones was introducing a provider-agnostic language model layer.
+
+The primary objective was to ensure that the rest of the application remains completely independent of individual LLM providers.
+
+### Architecture
+
+```text
 LLM Service
-↓
-Provider Adapter
-↓
-Provider SDK
+      │
+Provider Factory
+      │
+LLM Provider
+ ┌────┴────┐
+ │         │
+Groq     Mock
+```
 
-Agents interact only with the LLM Service.
+The application interacts only with the LLM Service.
 
-Provider-specific implementations remain isolated behind adapters.
+Provider-specific SDKs remain isolated behind provider implementations.
 
----
+### Implemented Components
 
-## Key Decisions
+* Unified request models
+* Unified response models
+* Provider interface
+* Mock Provider
+* Groq Provider
+* Provider Factory
+* LLM Service
+* Provider configuration
+* Exception hierarchy
+* Token usage tracking
 
-### Provider Abstraction
+### Architectural Decisions
 
-Agents remain unaware of:
+#### Provider Abstraction
 
-- Groq
-- OpenAI
-- Gemini
-- Anthropic
-- Ollama
-- OpenRouter
+Every provider implements a common interface.
 
-This reduces coupling and improves maintainability.
+Business logic never imports provider SDKs directly.
 
----
+#### Factory Pattern
 
-### Configuration-Driven Model Selection
+Provider creation is centralized through a dedicated factory.
 
-Model and provider selection are controlled through configuration files rather than hardcoded values.
+This isolates provider selection from application logic.
 
-Benefits:
+#### Configuration-Driven Providers
 
-- Easier experimentation
-- Environment flexibility
-- No code modifications for model changes
+Provider metadata is divided into three responsibilities:
 
----
+* `models.yaml` defines model assignments
+* `providers.yaml` defines provider behavior
+* `.env` stores secrets
 
-### Structured Output Strategy
+This separation allows environments and providers to change without modifying application code.
 
-The LLM layer was designed around typed Pydantic outputs.
+#### Mock Provider
 
-Planned outputs include:
+A dedicated mock implementation enables deterministic unit testing without network access.
 
-- PlanningResult
-- ResearchResult
-- ReviewResult
-- WritingResult
-- FinalReviewResult
+This significantly improves test reliability and execution speed.
 
-This improves validation and reliability.
+#### Official SDK Adoption
 
----
+The official Groq SDK was selected instead of custom HTTP requests.
 
-### Observability Support
+Advantages include:
 
-The architecture requires collection of:
+* Better long-term maintainability
+* SDK compatibility
+* Reduced implementation complexity
+* Easier future upgrades
 
-- Provider
-- Model
-- Execution duration
-- Token usage
-- Error information
+### Current Architecture
 
-This information will later support evaluation and monitoring.
-
----
-
-## Architectural Outcome
-
-The system architecture now becomes:
-
+```text
 LangGraph
-↓
+      │
+      ▼
 Nodes
-↓
+      │
+      ▼
 Agents
-↓
-Prompt Service + LLM Service
-↓
-Prompt Files + Providers
+      │
+      ▼
+Prompt Service
+      │
+LLM Service
+      │
+Provider Factory
+      │
+LLM Providers
+```
 
-This establishes clear responsibility boundaries throughout the system.
+Each layer communicates only with its immediate dependency, creating clear separation of concerns.
+
+### Testing
+
+The LLM infrastructure is supported by comprehensive automated tests covering:
+
+* Provider interface
+* Mock provider
+* Groq provider
+* Provider factory
+* LLM service
+* Configuration loading
+* Request and response models
+* Exception hierarchy
+
+At the completion of this milestone, the project contained **36 passing unit tests**, providing confidence that the infrastructure is stable before higher-level workflow development begins.
+
+### Lessons Learned
+
+Several architectural principles became increasingly clear during this milestone:
+
+* Stable abstractions reduce future refactoring.
+* Provider independence should be established before application logic grows.
+* Configuration should own deployment concerns, not business logic.
+* Comprehensive testing enables confident architectural evolution.
 
 ---
 
-## Lessons Learned
+# Current Architectural Snapshot
 
-Provider independence is easiest to achieve before implementation begins.
+```text
+Application
+      │
+LangGraph Workflow
+      │
+Nodes
+      │
+Agents
+      │
+Prompt Service
+      │
+LLM Service
+      │
+Provider Factory
+      │
+LLM Providers
+```
 
-Designing abstraction layers early significantly reduces future refactoring effort.
+The project now possesses a complete, provider-independent infrastructure capable of supporting the remaining workflow implementation.
 
----
-
-## Next Milestone
-
-Sprint 3.0 – Prompt Service Implementation
-
-Goals:
-
-- Prompt loading
-- Prompt rendering
-- Variable validation
-- Prompt caching
-- Prompt service testing
-
-## Sprint 3.0 – Giving the AI Its Instructions
-
-Until now, we had built the foundation of the project. In this sprint, we created the system responsible for managing every prompt used by our AI agents.
-
-Instead of hardcoding prompts inside Python files, every prompt now lives as a separate Markdown template. The Prompt Service loads these templates, fills in the required information using Jinja2, and returns the final prompt to the agent.
-
-This approach keeps prompts easy to read, easy to improve, and completely independent of the application's code. It also prepares us for future prompt engineering without modifying the software architecture.
+The next phase shifts focus from building infrastructure to orchestrating intelligent behavior through LangGraph and specialized AI agents.
